@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="library_book.js" type='text/javascript' defer></script>
+
+    <title>Book Catalogue</title>
+</head>
+<body>
+    <header>
+        <h2>Book Catalogue</h2>
+    </header>
+
+    <div class='bookSubmit hideMe'>
+        <form action="/" method="GET" id="bookForm" action="submit">
+            <div>
+                <label for="bookName">Book Name</label>
+                <input id="bookName" type="text" required>
+            </div>
+            <div>
+                <label for="author">Author</label>
+                <input id="author" type="text" required>
+            </div>
+            <div>
+                <label for="pages">Pages</label>
+                <input id="pages" type="text">
+            </div>
+            <div>
+                <label for="published">Publication Date</label>
+                <input id="published" type="text">
+            </div>
+            <div>
+                <label for="read">Read</label>
+                <input type="checkbox" name="read" id="read">
+            </div>
+            <div class="formButtonBox">
+                <button type="submit" class="submitBookButton">Submit</button>
+                <button class="cancelSubmitButton">Cancel</button>
+            </div>
+        </form>
+    </div>
+    <div class="addButtonBlock">
+    <!--<button class="display">display Books</button> -->
+        <button class="addBook">+</button>
+    </div>
+    <div class='bookShelf'></div>
+    
+
+    
+</body>
+</html>

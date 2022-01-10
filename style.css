@@ -1,0 +1,116 @@
+
+:root {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: 10px;
+}
+
+body {
+    background-color: rgba(70, 64, 64, 0.678);
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 0 0.5rem 0;
+    background-color: rgb(0, 134, 134);
+}
+header * {
+    margin: 0 0 0.5rem 0; 
+}
+
+.bookSubmit {
+    border: 1px solid;
+    position: absolute;
+    left: 30%;
+    top: 15%;
+    z-index: 5;
+}
+
+#bookForm div {
+    display: flex;
+    flex-direction: row;
+    width: 250px;
+    justify-content: space-between;
+    background: grey;
+}
+
+.hideMe {
+    display: none !important;
+    visibility: hidden;
+}
+
+.formButtonBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around !important;
+}
+.formButtonBox * {
+    width:40%;
+    border: 1px solid;
+}
+
+.bookShelf {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.card_container {
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    width: 130px;
+    height: fit-content;
+    font: italic 0.8rem "Fira Sans", serif;
+    margin: 0.5rem   0.5rem 0.5rem 0.5rem;
+    padding: 0 3px 0 3px;
+    background: rgb(222,222,222);
+    background: linear-gradient(45deg, rgba(222,222,222,0.9472163865546218) 14%, 
+    rgba(9,2,135,0.7987570028011204) 94%);
+    border-radius: 2%;
+}
+
+.card_button_container {
+    display: flex;
+    justify-content: space-around;
+    padding: 0 0 5px 0;
+}
+.book_upd, .submitBookButton {
+    background-color: #2ef5a9;
+}
+
+.book_rmv, .cancelSubmitButton {
+    background-color: #f52c09ab;
+}
+
+button {
+    font: inherit;
+    border: none;
+    border-radius: 2px 0 2px 0;
+}
+
+div.addButtonBlock {
+    display: flex;
+    padding: 3px;
+    justify-content : end;
+}
+
+div.addButtonBlock .addBook {
+    border-radius: 50%;
+    height: 25px;
+    width: 25px;
+    font-size: large;
+    color: black;
+    transition: transform 1s ease-in;
+    transform: rotate(0deg)  
+}   
+div.addButtonBlock .addBook:hover {
+    transform: rotate(90deg);
+    color: rgb(84, 226, 84);
+    transition: all 0.8s ease-in;
+}
+
