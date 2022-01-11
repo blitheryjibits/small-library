@@ -52,7 +52,8 @@ const create_book_card = function (book) {
     book_author.textContent = `Author: ${book.author}`;
     book_pages.textContent = `Number of pages: ${book.pages}`;
     book_publication.textContent = `Published: ${book.publication_date}`;
-    book_has_been_read.textContent = `This book has ${book.read}`;
+    book_has_been_read.textContent = `This book has ${book.read == 'on' ? 'been read' : 'not been read'}`;
+    
     
 ////////////////////  Append  ////////////////////////////////////////////////////////////
     card.append(book_title, book_author, book_pages, book_publication, book_has_been_read);
@@ -63,13 +64,15 @@ const create_book_card = function (book) {
 
 
 ////////////////////  Book Object  ////////////////////////////////////////////////////////
-function book(title, author, pages, published) {
-    this.bookId = generator.next().value;
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.publication_date = published;
-    this.read = 'not been read yet';
+class book {
+    constructor(title, author, pages, published, read) {
+        this.bookId = generator.next().value;
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.publication_date = published;
+        this.read = read;
+    }
 }
 ////////////////////  ID Generator  /////////////////////////////////////////////////////////
 function* infinite() {
@@ -95,7 +98,7 @@ function remove_book(e) {
     let current_book_title = current_book.firstChild.textContent.toLowerCase();
     let current_book_id = current_book.parentNode.getAttribute('id');
     let book_to_remove = localStorage.retrieve(current_book_title);
-    if (book_to_remove.bookId === current_book_id) {
+    if (book_to_remove['bookId'].toString() === current_book_id) {
         localStorage.removeItem(current_book_title);
     }
     display_books();
@@ -107,27 +110,33 @@ function populate_form(book) {
     author.value = (current_book.firstChild.nextElementSibling.textContent).slice(8);
     pages.value = (current_book.firstChild.nextElementSibling.nextElementSibling.textContent).slice(17);
     published.value = (current_book.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.textContent).slice(10);
+    read.checked = current_book.firstChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.textContent 
+    == 'This book has been read' ? true : false;
 }
+
+
 
 function update(book) {
     populate_form(book);
-    form_display();
+    display_form();
 }
 
-const display_refresh = function () {
+const refresh_display = function () {
     while(bookShelf.firstChild){
         bookShelf.removeChild(bookShelf.firstChild);
     }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-localStorage.addBook(new book("The Hobbit", "J.R.R Tolkien", "295", "1975"));
-localStorage.addBook(new book("The Temple", "Mathew Reilly", "490", "1990"));
-localStorage.addBook(new book("Harry Potter", "J.K Rowling", "500", "2000"));
+function create_base_storage() {
+localStorage.addBook(new book("The Hobbit", "J.R.R Tolkien", "295", "1975", 'on'));
+localStorage.addBook(new book("The Temple", "Mathew Reilly", "490", "1990", 'off'));
+localStorage.addBook(new book("Harry Potter", "J.K Rowling", "500", "2000", 'on'));
+}
 ///////////////////////////////////////////////////////////////////////////////
 
 
-function toggle(element) {
+function toggle(element) { 
     if(element.classList.contains('hideMe')) { 
         element.classList.remove('hideMe'); 
     } 
@@ -136,14 +145,14 @@ function toggle(element) {
     }
 }
 
-function form_display() {
+function display_form() {
     toggle(bookSubmit);
     toggle(addBook);
     toggle(bookShelf);
 }
 
 function display_books() {
-    display_refresh();
+    refresh_display();
     if (localStorage.length > 0){
         for (let i = localStorage.length-1; i >= 0; i--) {
             let current_title = localStorage.key(i);
@@ -157,17 +166,17 @@ function display_book(book) {
     return book_info;
 }
 
-function form_reset() {
+function reset_form() {
     bookName.value = ''; author.value = ''; pages.value = ''; published.value ='';
-    read.value = false;
+    read.checked = false;
 }
 
 function check_storage() {
-    let current_title = bookName.value 
+    let current_title = bookName.value;
     for (let i = localStorage.length-1; i >= 0; i--) {
         let old_title = localStorage.key(i);
-        if (current_title == old_title) {
-            remove_book(localStorage.key(i));
+        if (current_title.toLowerCase() == old_title.toLowerCase()) {
+            localStorage.removeItem(localStorage.key(i));
         }
     }
 }
@@ -175,25 +184,25 @@ function check_storage() {
 // Event Listeners
 //// Submit books to local_storage
 addBook.addEventListener('click', () => {
-    form_display();
+    display_form();
 });
 
 form.addEventListener('submit', (e) => {
     e.preventDefault();
     check_storage();
-    let hasBeenRead = (read.checked) ? 'been read' : 'not been read yet';
-    localStorage.addBook(new book(bookName.value, author.value, pages.value, published.value, hasBeenRead));
-    form_reset();
-    form_display();
+    localStorage.addBook(new book(
+        bookName.value, author.value, pages.value, published.value, read.checked == true ? 'on' : 'off'));
+    reset_form();
+    display_form();
     display_books();
 });
 
 
 cancelSubmit.addEventListener('click', () => {
-    form_reset();
-    form_display();
+    reset_form();
+    display_form();
 });
 
+create_base_storage();
 display_books();
-
 
